@@ -7,8 +7,6 @@
         - EGPU Radeon 9070 con 16 GB VRAM
     son:
         --n-gpu-layers  : Define cuantas capas del modelo se cargan en la GPU si es alto, 99 se intenta forzar todo en la GPU
-        --split-mode    : Controla como se divide el modelo Usamos con none o row .  Lo ideal es evitar que la CPU intervenga  si el modelo cabe en la VRAM.
-        --threads       : Hilos de cpu para las capas que no quepan en la eGPU. normalmente 8 o 12.
         --flash-attn    : OBLIGATORIO reduce drastimante el uso de VRAM durane el procesamiento de contexto.
         --mlock         : bloquea la memoria par evitar que el sistema la mueva al disco swap.
         --chat-template : chatml => para frenar los <|im_end|> los modelso se preparan para el formato de cat especifico ChatML 
@@ -49,12 +47,14 @@
         --numa distribute : optimiza como se reparten los datos en los 64  GB de la cepu
         --prio 3        : eleva la prioridad del proceso.
         -C 4            : Context shift ayer a que la cpu gestione mejor el contexto cuando el modelo es muy grande
+        --split-mode    : Controla como se divide el modelo Usamos con none o row .  Lo ideal es evitar que la CPU intervenga  si el modelo cabe en la VRAM.
+        --threads       : Hilos de cpu para las capas que no quepan en la eGPU. normalmente 8 o 12.
 
     Ejemplos:
         Caso A: el modelo cabe en la eGPU
             ./llama-cli -m modelo.gguf \
                     --n-gpu-layers 99 \
-                    --flash-attn \
+                    --flash-attn on\
                     --mlock \
                     --threads 8
                     --ctx-size 8192 o -c
@@ -62,7 +62,7 @@
         Caso B: el modelo NO cabe en la eGPU
             ./llama-cli -m modelo_70b.gguf \
                     --n-gpu-layers  40 \
-                    --flash-attn \
+                    --flash-attn on\
                     --mlock \
                     --threads 12 \
                     --ctx-size 4096 o -c
