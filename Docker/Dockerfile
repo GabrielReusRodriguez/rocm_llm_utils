@@ -3,7 +3,6 @@
 # Usamos una imagen base con ROCm (para AMD GPU)
 #FROM rocm/dev-ubuntu-24.04:latest
 FROM rocm/rocm-terminal:latest
-# TODO: Probar con rocm/rocm-terminal:latest e instalando las librerias hipblas-dev y rocblas-dev
 
 USER root
 
@@ -47,9 +46,10 @@ ENV GGML_HIP_ALLOC_GRAPH=1
 # Para forzar la ejecución de la arquitectura RDNA4
 ENV HSA_OVERRIDE_GFX_VERSION=12.0.0
 
+# Copiamos el modelo (opcional: puedes montarlo como volumen)
+RUN wget -O /app/llama.cpp/models/${LLM_FILE} ${LLM_URL}
+
 COPY ./scripts/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 
-# Copiamos el modelo (opcional: puedes montarlo como volumen)
-RUN wget -O /app/llama.cpp/models/${LLM_FILE} ${LLM_URL}

@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   # Servicio de llama.cpp
   llamacpp:
@@ -51,8 +49,8 @@ services:
       - "8081:8080"  # Puerto interno de Open WebUI
     volumes:
       - ./open-webui/data:/app/backend/data  # Persistencia de datos
-    #environment:
-    #  - OLLAMA_BASE_URL=http://nginx/api  # Apunta a Nginx como proxy
+    environment:
+      - OLLAMA_BASE_URL=http://nginx/api  # Apunta a Nginx como proxy
     depends_on:
       - nginx
     networks:

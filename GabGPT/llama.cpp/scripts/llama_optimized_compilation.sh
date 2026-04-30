@@ -12,6 +12,11 @@
         Ubuntu 24.0
 '
 
+: ${LLAMA_CFG_AMDGPU_TARGETS:=gfx1200}
+: ${ROCM_PATH:=/opt/rocm}
+: ${LD_LIBRARY:=${ROC_PATH}/lib:${LD_LIBRARY_PATH}}
+
+
 # Compilamos llama.cpp con soporte para ROCm (AMD GPU)
 # Añade aquí tus flags personalizadas para el compilador
 cmake -S . -B build \
