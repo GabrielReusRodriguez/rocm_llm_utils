@@ -1,0 +1,13 @@
+services:
+
+  # Servicio de Open WebUI
+  openwebui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: openwebui
+    restart: unless-stopped
+    ports:
+      - "${OPENWEB_UI_HOST_PORT}:${OPENWEB_UI_CONTAINER_PORT}"  # Puerto interno de Open WebUI
+    volumes:
+      - ${OPENWEB_UI_DATA_PATH}/open-webui/data:/app/backend/data  # Persistencia de datos
+    environment:
+      - OLLAMA_BASE_URL=${LLM_SERVER_URL}  # Apunta a Nginx como proxy
