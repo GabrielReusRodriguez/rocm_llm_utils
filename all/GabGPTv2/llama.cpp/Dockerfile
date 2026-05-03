@@ -6,6 +6,10 @@ FROM rocm/rocm-terminal:latest
 
 USER root
 
+# Para que Dockerfile reciba las variables del docker-compose.yml
+ARG LLM_FILE
+ARG LLM_URL
+
 # Instalamos dependencias necesarias y borramos el almacen temporal de apt /var/lib/lists/*
 RUN apt-get update && apt-get install -y \
     git \
@@ -32,6 +36,8 @@ RUN chmod +x /app/scripts/llama_optimized_compilation.sh
 WORKDIR /app/llama.cpp
 RUN /app/scripts/llama_optimized_compilation.sh
 
+# Cramos la carpeta
+RUN mkdir -p /app/llama.cpp/models
 
 # Copiamos el modelo (opcional: puedes montarlo como volumen)
 ENV LLAMA_LLM_MODEL_PATH="/app/llama.cpp/models/${LLM_FILE}"
