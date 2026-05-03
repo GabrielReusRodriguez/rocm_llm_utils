@@ -25,8 +25,6 @@ services:
     build:
       context: ./nginx
     container_name: nginx
-    env_file:
-      - ./nginx/.env.nginx
     restart: unless-stopped
     ports:
       - "${NGINX_HOST_HTTP_PORT}:${NGINX_CONTAINER_HTTP_PORT}"
@@ -56,7 +54,6 @@ services:
       - OLLAMA_BASE_URL=${LLM_SERVER_URL}  # Apunta a Nginx como proxy
     networks:
       - app_network
-
 
 networks:
   app_network:
