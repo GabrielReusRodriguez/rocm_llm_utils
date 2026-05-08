@@ -61,14 +61,14 @@ services:
     container_name: openwebui
     restart: unless-stopped
     ports:
-      - "${OPENWEB_UI_HOST_PORT}:${OPENWEB_UI_CONTAINER_PORT}"  # Puerto interno de Open WebUI
+      - "${OPENWEBUI_HOST_PORT}:${OPENWEBUI_CONTAINER_PORT}"  # Puerto interno de Open WebUI
     depends_on: 
       - llamacpp
     volumes:
-      - ${OPENWEB_UI_DATA_PATH}:/app/backend/data  # Persistencia de datos
+      - ${OPENWEBUI_DATA_PATH}:/app/backend/data  # Persistencia de datos
     environment:
       #- OLLAMA_BASE_URL=${LLM_SERVER_URL}  # Apunta a Nginx como proxy
-      - OPENAI_API_BASE_URL=${LLM_SERVER_URL}  # Apunta a Nginx como proxy
+      - OPENAI_API_BASE_URL=${LLAMACPP_SERVER_URL}  # Apunta a Nginx como proxy
       - OPENAI_API_KEY=api_key_openai
       - WEBUI_SECRET_KEY=misupersecretokey
     networks:
