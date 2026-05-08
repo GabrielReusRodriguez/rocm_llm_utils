@@ -23,7 +23,7 @@ services:
       #- ROC_ENABLE_PREFETCH = ${ROCB_ENABLE_PREFETCH}
       #- GGML_HIP_ALLOC_GRAPH = ${GGML_HIP_ALLOC_GRAPH}
       #- HIP_VISIBLE_DEVICES = ${HIP_VISIBLE_DEVICES}
-    env-file:
+    env_file:
       - ./llama.cpp/.env.llama
     devices:
       - "/dev/kfd:/dev/kfd"    # Interfaz de computación AMD
