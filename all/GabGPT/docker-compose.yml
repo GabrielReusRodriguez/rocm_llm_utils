@@ -16,15 +16,8 @@ services:
       - LLAMA_ARG_PORT=${LLAMACPP_CONTAINER_PORT}
       - LLAMA_ARG_MODEL=${LLAMACPP_MODEL_2_RUN}
       - HSA_OVERRIDE_GFX_VERSION=${HSA_OVERRIDE_GFX_VERSION}
-
-      #- LLAMA_ARG_CTX_SIZE = ${LLAMACPP_MODEL_CTX_SIZE}
-      #- LLAMA_ARG_N_GPU_LAYERS = ${GPU_CFG_NUM_LAYERS}
-      #- LLAMA_ARG_THREADS = ${CPU_CFG_NUM_THREADS}
-      #- ROC_ENABLE_PREFETCH = ${ROCB_ENABLE_PREFETCH}
-      #- GGML_HIP_ALLOC_GRAPH = ${GGML_HIP_ALLOC_GRAPH}
-      #- HIP_VISIBLE_DEVICES = ${HIP_VISIBLE_DEVICES}
     env_file:
-      - ./llama.cpp/.env.llama
+      - ${GABGPT_SECRET_FOLDER}/.env.llama
     devices:
       - "/dev/kfd:/dev/kfd"    # Interfaz de computación AMD
       - "/dev/dri:/dev/dri"    # Renderizado directo
@@ -65,7 +58,7 @@ services:
     networks:
       - app_network
 
-  # Servicio de Open WebUI
+  # Servicio de OpenWebUI
   # ****************************************************************
   openwebui:
     image: ghcr.io/open-webui/open-webui:main
@@ -75,6 +68,8 @@ services:
       - "${OPENWEBUI_HOST_PORT}:${OPENWEBUI_CONTAINER_PORT}"  # Puerto interno de Open WebUI
     depends_on: 
       - llamacpp
+    env_files:
+      - .${GABGPT_SECRET_FOLDER}/.env.openwebui
     volumes:
       - ${OPENWEBUI_DATA_PATH}:/app/backend/data  # Persistencia de datos
     environment:
@@ -84,6 +79,11 @@ services:
       - WEBUI_SECRET_KEY=misupersecretokey
     networks:
       - app_network
+
+  # Servicio de OpenNotebook (NotebookLM open source)
+  # ****************************************************************
+  #opennotebook:
+  
 
 networks:
   app_network:
