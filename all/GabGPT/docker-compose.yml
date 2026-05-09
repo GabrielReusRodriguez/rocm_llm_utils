@@ -68,7 +68,7 @@ services:
       - "${OPENWEBUI_HOST_PORT}:${OPENWEBUI_CONTAINER_PORT}"  # Puerto interno de Open WebUI
     depends_on: 
       - llamacpp
-    env_files:
+    env_file:
       - .${GABGPT_SECRET_FOLDER}/.env.openwebui
     volumes:
       - ${OPENWEBUI_DATA_PATH}:/app/backend/data  # Persistencia de datos
