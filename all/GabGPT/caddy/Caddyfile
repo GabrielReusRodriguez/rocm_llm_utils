@@ -1,0 +1,21 @@
+wopr.lan:443 {
+
+	tls internal
+	
+	handle_path /n8n/*{
+		reverse_proxy n8n:5678
+	}
+
+}
+
+wopr.lan:80 {
+	
+	handle_path /llama/api/ {
+		reverse_proxy llamacpp:8080/api/
+	}
+
+	handle_path / {
+		reverse_proxy openwebui:8080
+	}
+
+}

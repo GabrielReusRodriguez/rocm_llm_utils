@@ -20,7 +20,7 @@ services:
     image: caddy:latest
     ports:
       - "801:80"
-      - "4431:4431"
+      - "4431:443"
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile
       - /mnt/datos/caddyfile/:/data

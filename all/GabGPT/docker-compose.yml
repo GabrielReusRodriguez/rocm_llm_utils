@@ -44,9 +44,10 @@ services:
       #context: ./nginx
     container_name: nginx-landing
     restart: unless-stopped
+    preferences: ['nginx']
     ports:
       - "${NGINX_HOST_HTTP_PORT}:${NGINX_CONTAINER_HTTP_PORT}"
-      - "${NGINX_HOST_HTTPS_PORT}:${NGINX_CONTAINER_HTTPS_PORT}"  # Opcional: si usas HTTPS
+      #- "${NGINX_HOST_HTTPS_PORT}:${NGINX_CONTAINER_HTTPS_PORT}"  # Opcional: si usas HTTPS
     depends_on:
       - openwebui
       - llamacpp
@@ -84,6 +85,43 @@ services:
   # ****************************************************************
   #opennotebook:
   
+
+
+  # Servicio de n8n
+  # ****************************************************************
+  n8n:
+    image: n8nio/n8n
+    container_name: n8n
+    restart: unless-stopped
+    profiles: ['n8n', 'all']
+    environment:
+      - N8N_HOST=n8n
+      - N8N_PROTOCOL=${N8N_PROTOCOL}
+      - N8N:PORT=${N8N_PORT}
+      - NODE_ENV=production
+      - WEBHOOK_URL=https://n8n:443/
+    #ports:
+    #  - ${N8N_PORT}:${N8N_PORT}
+    expose:
+      - ${N8N_PORT}
+    volumes:
+      - ${N8N_CONTAINER_DATA_PATH}:/home/node/.n8n  # Persiste los datos de n8n (flujos)
+    networks:
+      - bridge
+  
+  # Servicio de Nginx (proxy inverso con autenticación por API-KEY)
+  # ****************************************************************
+  caddy:
+    image: caddy:latest
+    ports:
+      - "80"
+      - "443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - /mnt/datos/caddyfile/:/data
+    restart: unless-stopped
+    networks:
+      - bridge
 
 networks:
   app_network:

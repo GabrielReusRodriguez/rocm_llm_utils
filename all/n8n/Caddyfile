@@ -1,6 +1,0 @@
-wopr.lan:4431  {
-
-	tls internal
-	reverse_proxy n8n:5678
-
-}
