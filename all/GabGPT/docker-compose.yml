@@ -102,6 +102,9 @@ services:
       - WEBHOOK_URL=https://n8n:443/
     #ports:
     #  - ${N8N_PORT}:${N8N_PORT}
+    environment: 
+      - ${N8N_PORT}=${N8N_PORT}
+      - ${N8N_CONTAINER_DATA_PATH}=${N8N_CONTAINER_DATA_PATH}
     expose:
       - ${N8N_PORT}
     volumes:
