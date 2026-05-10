@@ -1,21 +1,29 @@
 wopr.lan:443 {
-
 	tls internal
 	
-	handle_path /n8n/*{
+	handle_path /n8n/* {
 		reverse_proxy n8n:5678
 	}
-
 }
 
+
 wopr.lan:80 {
-	
-	handle_path /llama/api/ {
-		reverse_proxy llamacpp:8080/api/
+	# Redirigir el API de Llama
+	# Caddy maneja automáticamente el strip del prefijo si usas handle_path
+	handle_path /llama/api/* {
+		# Validación de API-KEY
+		# Si quieres replicar el bloqueo por cabecera:
+		# @no_api_key not header X-API-KEY tu_api_key_secreta
+		#respond @no_api_key "Forbidden: Invalid or missing API-KEY" 403
+
+		reverse_proxy http://llama.cpp:8080 {
+			# Reescribimos el path para que coincida con el /api/ interno
+			rewrite /api{uri}
+		}
 	}
 
-	handle_path / {
-		reverse_proxy openwebui:8080
+	# Frontend de Open WebUI (Todo lo demás)
+	handle /* {
+		reverse_proxy http://openwebui:8080
 	}
-
 }

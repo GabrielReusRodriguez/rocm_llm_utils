@@ -44,7 +44,7 @@ services:
       #context: ./nginx
     container_name: nginx-landing
     restart: unless-stopped
-    preferences: ['nginx']
+    profiles: ['nginx']
     ports:
       - "${NGINX_HOST_HTTP_PORT}:${NGINX_CONTAINER_HTTP_PORT}"
       #- "${NGINX_HOST_HTTPS_PORT}:${NGINX_CONTAINER_HTTPS_PORT}"  # Opcional: si usas HTTPS
@@ -67,6 +67,8 @@ services:
     restart: unless-stopped
     ports:
       - "${OPENWEBUI_HOST_PORT}:${OPENWEBUI_CONTAINER_PORT}"  # Puerto interno de Open WebUI
+        #    expose:
+        #- ${OPENWEBUI_CONTAINER_PORT}
     depends_on: 
       - llamacpp
     env_file:
@@ -97,14 +99,12 @@ services:
     environment:
       - N8N_HOST=n8n
       - N8N_PROTOCOL=${N8N_PROTOCOL}
-      - N8N:PORT=${N8N_PORT}
+      - N8N_PORT=${N8N_PORT}
       - NODE_ENV=production
       - WEBHOOK_URL=https://n8n:443/
+        #- N8N_CONTAINER_DATA_PATH=${N8N_CONTAINER_DATA_PATH}
     #ports:
     #  - ${N8N_PORT}:${N8N_PORT}
-    environment: 
-      - ${N8N_PORT}=${N8N_PORT}
-      - ${N8N_CONTAINER_DATA_PATH}=${N8N_CONTAINER_DATA_PATH}
     expose:
       - ${N8N_PORT}
     volumes:
@@ -116,15 +116,16 @@ services:
   # ****************************************************************
   caddy:
     image: caddy:latest
+    container_name: caddy-landing
     ports:
-      - "80"
-      - "443"
+      - "80:80"
+      - "443:443"
     volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile
       - /mnt/datos/caddyfile/:/data
     restart: unless-stopped
     networks:
-      - bridge
+      - app_network
 
 networks:
   app_network:
