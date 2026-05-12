@@ -14,4 +14,7 @@ exec /app/llama.cpp/build/bin/llama-server \
     --ctx-size "${LLAMACPP_MODEL_CTX_SIZE}"
 '
 
+#exec /app/llama.cpp/build/bin/llama-cli --list-devices
+
+
 exec /app/llama.cpp/build/bin/llama-server

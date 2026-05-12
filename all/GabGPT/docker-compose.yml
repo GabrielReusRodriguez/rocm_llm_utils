@@ -10,6 +10,7 @@ services:
         # Aquí mapeamos la variable del .env al argumento del Dockerfile
         - AMDGPU_TARGETS=${AMDGPU_TARGETS}
     # command: ["-shm-size 8g","--ipc=host"]    
+    privileged: true
     container_name: llama.cpp
     restart: unless-stopped
     environment:
@@ -19,13 +20,15 @@ services:
     env_file:
       - ${GABGPT_SECRET_FOLDER}/.env.llama
     devices:
+      #- HIP0
+      #- HIP1
       - "/dev/kfd:/dev/kfd"    # Interfaz de computación AMD
       - "/dev/dri:/dev/dri"    # Renderizado directo
-        #    group_add:
+        # group_add:
         #- video                  # Permisos para acceder al hardware de video
         #- render
     ipc : host      # Optimizacion: Comparte el espacio de memoria interproceso con el host. El contenedor puede acceder a recursos del host como semaforos, memoria compartida...
-    shm_size: 8g    # Optimizacion: Define el tamaño de la memoria compartida. Los procesos comparten memoria directamente en la memoria, sin tener que copiarlos.
+    shm_size: '16gb'    # Optimizacion: Define el tamaño de la memoria compartida. Los procesos comparten memoria directamente en la memoria, sin tener que copiarlos.
     security_opt:
       - seccomp:unconfined     # A veces necesario para ROCm
     expose:

@@ -28,3 +28,11 @@ echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.
 
 # Instalo docker en si
 sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin git git-lfs
+
+# Instalo los drivers de vulkan para tener los dos gpus.
+
+# Instalar drivers Vulkan y utilidades
+sudo apt install libvulkan1 libvulkan-dev mesa-vulkan-drivers vulkan-tools
+
+# Instalar utilidades adicionales para desarrollo
+sudo apt install glslc spirv-headers

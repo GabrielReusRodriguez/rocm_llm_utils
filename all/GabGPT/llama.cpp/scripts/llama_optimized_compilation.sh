@@ -26,6 +26,10 @@
 # Compilamos llama.cpp con soporte para ROCm (AMD GPU)
 # Añade aquí tus flags personalizadas para el compilador
 # Todo lo que vaya con -DGGML son flags para la libreria matematica que usa llama.cpp
+# original
+# -DGGML_VULKAN=ON \
+# -DGGML_HIP_UMA=OFF
+# -DGGML_HIP_VMM= SIN
 cmake -S . -B build \
         -DGGML_CUDA=OFF \
         -DGGML_HIP=ON \
@@ -35,6 +39,7 @@ cmake -S . -B build \
         -DGGML_FAST_MM_F16=ON \
         -DGGML_CUDA_FORCE_MMAP=ON \
         -DGGML_HIP_UMA=OFF \
+	-DGGML_HIP_VMM=ON \
         -DGGML_NATIVE=ON \
         -DGGML_AVX512=ON \
         -DGGML_AVX512_VBMI=ON \

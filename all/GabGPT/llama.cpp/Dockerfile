@@ -17,6 +17,11 @@ RUN apt-get update && apt-get install -y \
     wget \
     && rm -rf /var/lib/apt/lists/*
 
+
+
+
+
+
 # Clonamos el repositorio de llama.cpp
 WORKDIR /app
 RUN git clone --depth 1 https://github.com/ggml-org/llama.cpp.git
