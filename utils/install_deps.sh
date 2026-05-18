@@ -33,6 +33,7 @@ sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plu
 
 # Instalar drivers Vulkan y utilidades
 sudo apt install libvulkan1 libvulkan-dev mesa-vulkan-drivers vulkan-tools
+sudo apt install radeontop
 
 # Instalar utilidades adicionales para desarrollo
 sudo apt install glslc spirv-headers
